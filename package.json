@@ -12,7 +12,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "agent-traffic-light-monitor": "./dist/cli.js"
+    "agent-traffic-light-monitor": "dist/cli.js"
   },
   "files": [
     "dist",
