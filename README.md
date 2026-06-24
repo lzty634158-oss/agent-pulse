@@ -208,11 +208,16 @@ Doctor checks:
 
 If status does not change:
 
-1. Run `npm run build`.
-2. Run `node dist/cli.js init`.
-3. Restart the Claude Code session in VS Code.
-4. Run `node dist/cli.js watch` in another terminal.
-5. Ask Claude Code to read or edit a file to trigger hooks.
+1. Make sure you are in the project directory you want to monitor.
+2. Run `npm run build`.
+3. Run `node dist/cli.js init` from that same project directory.
+4. Restart the Claude Code session in VS Code.
+5. Run `node dist/cli.js watch` in another terminal from that same project directory.
+6. Ask Claude Code to read or edit a file to trigger hooks.
+
+If you have multiple `.agent-pulse/status.json` files, make sure `watch` is reading the one inside the project you are currently using with Claude Code.
+
+Tool approval and permission prompts are treated as attention states. `PreToolUse` and `PermissionRequest` should show red until the tool completes or Claude stops.
 
 If desktop notifications are noisy, run:
 

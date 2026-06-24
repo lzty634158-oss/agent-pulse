@@ -116,9 +116,9 @@ export function buildHookMessage(event: string, parsed: ParsedHookPayload): stri
   const tool = parsed.toolName ?? 'tool';
 
   if (event === 'pre-tool-use') {
-    if (parsed.command) return `Running ${parsed.command}`;
-    if (parsed.filePath) return `${tool} ${parsed.filePath}`;
-    return `Using ${tool}`;
+    if (parsed.command) return `Waiting to run ${parsed.command}`;
+    if (parsed.filePath) return `Waiting to use ${tool} ${parsed.filePath}`;
+    return `Waiting to use ${tool}`;
   }
 
   if (event === 'post-tool-use') {
