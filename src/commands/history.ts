@@ -6,7 +6,7 @@ export async function historyCommand(limit = 20): Promise<void> {
   const recentEvents = events.slice(-limit);
 
   if (recentEvents.length === 0) {
-    console.log('No Agent Pulse events yet.');
+    console.log('No Agent Traffic Light Monitor events yet.');
     return;
   }
 

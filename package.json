@@ -1,16 +1,31 @@
 {
-  "name": "agent-pulse",
-  "version": "0.1.0",
+  "name": "agent-traffic-light-monitor",
+  "version": "0.1.1",
   "description": "A status light and alerting layer for Claude Code and AI coding agents.",
   "type": "module",
-  "bin": {
-    "agent-pulse": "./dist/cli.js"
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
+  "bin": {
+    "agent-traffic-light-monitor": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.*.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsx src/cli.ts",
-    "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
   },
   "keywords": [
     "claude-code",
@@ -19,8 +34,23 @@
     "developer-tools",
     "observability"
   ],
-  "author": "",
+  "author": "Lison",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lzty634158-oss/agent-pulse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lzty634158-oss/agent-pulse/issues"
+  },
+  "homepage": "https://github.com/lzty634158-oss/agent-pulse#readme",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "npm@11.17.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "chalk": "^5.4.1",
     "chokidar": "^4.0.3",

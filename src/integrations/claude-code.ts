@@ -67,22 +67,22 @@ async function readClaudeSettings(settingsPath: string): Promise<ClaudeSettings>
   return JSON.parse(raw) as ClaudeSettings;
 }
 
-function isAgentPulseCommand(command: string): boolean {
-  return command.includes('agent-pulse') || command.includes('dist/cli.js') || command.includes('dist\\cli.js');
+function isAgentTrafficLightMonitorCommand(command: string): boolean {
+  return command.includes('agent-traffic-light-monitor') || command.includes('agent-pulse') || command.includes('dist/cli.js') || command.includes('dist\\cli.js');
 }
 
-function removeOldAgentPulseHooks(matchers: ClaudeHookMatcher[]): ClaudeHookMatcher[] {
+function removeOldAgentTrafficLightMonitorHooks(matchers: ClaudeHookMatcher[]): ClaudeHookMatcher[] {
   return matchers
     .map((matcher) => ({
       ...matcher,
-      hooks: matcher.hooks.filter((hook) => !(hook.type === 'command' && isAgentPulseCommand(hook.command))),
+      hooks: matcher.hooks.filter((hook) => !(hook.type === 'command' && isAgentTrafficLightMonitorCommand(hook.command))),
     }))
     .filter((matcher) => matcher.hooks.length > 0);
 }
 
 function mergeHook(settings: ClaudeSettings, hookName: string, command: string): void {
   settings.hooks ??= {};
-  const matchers = removeOldAgentPulseHooks(settings.hooks[hookName] ?? []);
+  const matchers = removeOldAgentTrafficLightMonitorHooks(settings.hooks[hookName] ?? []);
 
   matchers.push({
     hooks: [

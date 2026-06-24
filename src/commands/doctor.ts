@@ -19,17 +19,17 @@ async function readJsonFile(filePath: string): Promise<unknown> {
   return JSON.parse(raw) as unknown;
 }
 
-function hasAgentPulseCommand(value: unknown): boolean {
+function hasAgentTrafficLightMonitorCommand(value: unknown): boolean {
   if (typeof value === 'string') {
-    return value.includes('dist/cli.js') || value.includes('dist\\cli.js') || value.includes('agent-pulse');
+    return value.includes('dist/cli.js') || value.includes('dist\\cli.js') || value.includes('agent-traffic-light-monitor') || value.includes('agent-pulse');
   }
 
   if (Array.isArray(value)) {
-    return value.some(hasAgentPulseCommand);
+    return value.some(hasAgentTrafficLightMonitorCommand);
   }
 
   if (typeof value === 'object' && value !== null) {
-    return Object.values(value).some(hasAgentPulseCommand);
+    return Object.values(value).some(hasAgentTrafficLightMonitorCommand);
   }
 
   return false;
@@ -45,19 +45,20 @@ function hasHook(settings: unknown, hookName: string): boolean {
     return false;
   }
 
-  return hasAgentPulseCommand((hooks as Record<string, unknown>)[hookName]);
+  return hasAgentTrafficLightMonitorCommand((hooks as Record<string, unknown>)[hookName]);
 }
 
 export async function doctorCommand(): Promise<void> {
   const checks: CheckResult[] = [];
   const distCliPath = path.join(process.cwd(), 'dist', 'cli.js');
+  const hasSourceBuild = existsSync(distCliPath);
   const claudeSettingsPath = getClaudeSettingsPath();
 
   checks.push({ label: '.agent-pulse directory', ok: existsSync(getPulseDir()) });
   checks.push({ label: '.agent-pulse/config.json', ok: existsSync(getConfigPath()) });
   checks.push({ label: '.agent-pulse/status.json', ok: existsSync(getStatusPath()) });
   checks.push({ label: '.agent-pulse/events.jsonl', ok: existsSync(getEventsPath()) });
-  checks.push({ label: 'dist/cli.js build output', ok: existsSync(distCliPath), detail: existsSync(distCliPath) ? distCliPath : 'run npm run build' });
+  checks.push({ label: 'source build output', ok: true, detail: hasSourceBuild ? distCliPath : 'not required for installed CLI usage' });
   checks.push({ label: '.claude/settings.json', ok: existsSync(claudeSettingsPath), detail: claudeSettingsPath });
 
   if (existsSync(claudeSettingsPath)) {
@@ -65,7 +66,7 @@ export async function doctorCommand(): Promise<void> {
       const settings = await readJsonFile(claudeSettingsPath);
       const statusLine = typeof settings === 'object' && settings !== null ? (settings as { statusLine?: unknown }).statusLine : undefined;
 
-      checks.push({ label: 'Claude Code statusLine configured', ok: hasAgentPulseCommand(statusLine) });
+      checks.push({ label: 'Claude Code statusLine configured', ok: hasAgentTrafficLightMonitorCommand(statusLine) });
       checks.push({ label: 'Claude Code PreToolUse hook configured', ok: hasHook(settings, 'PreToolUse') });
       checks.push({ label: 'Claude Code PostToolUse hook configured', ok: hasHook(settings, 'PostToolUse') });
       checks.push({ label: 'Claude Code Notification hook configured', ok: hasHook(settings, 'Notification') });
@@ -75,7 +76,7 @@ export async function doctorCommand(): Promise<void> {
     }
   }
 
-  console.log('Agent Pulse doctor');
+  console.log('Agent Traffic Light Monitor doctor');
   console.log('');
   for (const check of checks) {
     console.log(formatCheck(check));
@@ -85,13 +86,13 @@ export async function doctorCommand(): Promise<void> {
   if (failed.length > 0) {
     console.log('');
     console.log('Suggested fix:');
-    console.log('1. Run npm run build');
-    console.log('2. Run node dist/cli.js init');
-    console.log('3. Restart your Claude Code session in VS Code');
+    console.log('1. Run agent-traffic-light-monitor init');
+    console.log('2. Restart your Claude Code session in VS Code');
+    console.log('3. Run agent-traffic-light-monitor watch in another terminal');
     process.exitCode = 1;
     return;
   }
 
   console.log('');
-  console.log('Setup looks good. Run node dist/cli.js watch, then use Claude Code in this project.');
+  console.log('Setup looks good. Run agent-traffic-light-monitor watch, then use Claude Code in this project.');
 }

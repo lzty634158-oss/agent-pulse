@@ -15,7 +15,7 @@ function renderConfigPage(config: PulseConfig, saved = false): string {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Agent Pulse Config</title>
+  <title>Agent Traffic Light Monitor Config</title>
   <style>
     :root { color-scheme: light dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     body { margin: 0; background: #0f172a; color: #e2e8f0; }
@@ -39,7 +39,7 @@ function renderConfigPage(config: PulseConfig, saved = false): string {
 <body>
   <main>
     <div class="card">
-      <h1>Agent Pulse Config</h1>
+      <h1>Agent Traffic Light Monitor Config</h1>
       <p>Configure local notifications and stuck detection for this project.</p>
       ${saved ? '<div class="saved">Saved. You can close this tab or keep adjusting.</div>' : ''}
       <form method="post" action="/config">
@@ -143,7 +143,7 @@ export async function configUiCommand(port = DEFAULT_PORT): Promise<void> {
   });
 
   const url = `http://127.0.0.1:${port}`;
-  console.log(`Agent Pulse config UI is running at ${url}`);
+  console.log(`Agent Traffic Light Monitor config UI is running at ${url}`);
   console.log('Press Ctrl+C to stop.');
   openBrowser(url);
 }

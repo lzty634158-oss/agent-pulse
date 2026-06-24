@@ -1,6 +1,6 @@
-# Agent Pulse
+# Agent Traffic Light Monitor
 
-Agent Pulse 是一个面向 Claude Code 和 AI 编程助手的本地状态灯与提醒工具。
+Agent Traffic Light Monitor 是一个面向 Claude Code 和 AI 编程助手的本地状态灯与提醒工具。
 
 语言： [English](README.md) | 简体中文 | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Deutsch](README.de.md) | [Español](README.es.md)
 
@@ -22,11 +22,18 @@ Agent Pulse 是一个面向 Claude Code 和 AI 编程助手的本地状态灯与
 - 本地浏览器配置页
 - 安装诊断命令
 
-## 从源码安装
+## 安装
+
+全局安装：
 
 ```bash
-npm install
-npm run build
+npm install -g agent-traffic-light-monitor
+```
+
+或者不全局安装，直接运行：
+
+```bash
+npx agent-traffic-light-monitor --help
 ```
 
 ## 初始化项目
@@ -34,10 +41,10 @@ npm run build
 在需要监控的项目根目录运行：
 
 ```bash
-node dist/cli.js init
+agent-traffic-light-monitor init
 ```
 
-初始化时，Agent Pulse 会询问通知偏好，并写入：
+初始化时，Agent Traffic Light Monitor 会询问通知偏好，并写入：
 
 ```text
 .agent-pulse/config.json
@@ -53,17 +60,17 @@ node dist/cli.js init
 在项目目录中再打开一个终端，运行：
 
 ```bash
-node dist/cli.js watch
+agent-traffic-light-monitor watch
 ```
 
 然后正常使用 Claude Code。Claude 调用工具、完成任务、需要介入时，`watch` 终端会自动更新红黄绿状态。
 
-## 配置 Agent Pulse
+## 配置 Agent Traffic Light Monitor
 
 ### 本地浏览器配置页
 
 ```bash
-node dist/cli.js config-ui
+agent-traffic-light-monitor config-ui
 ```
 
 会打开：
@@ -88,22 +95,22 @@ http://127.0.0.1:4321
 查看全部配置：
 
 ```bash
-node dist/cli.js config show
+agent-traffic-light-monitor config show
 ```
 
 查看单个配置：
 
 ```bash
-node dist/cli.js config show notifyOnComplete
+agent-traffic-light-monitor config show notifyOnComplete
 ```
 
 修改配置：
 
 ```bash
-node dist/cli.js config set notifyOnComplete false
-node dist/cli.js config set notifyOnError true
-node dist/cli.js config set notifyOnStuck true
-node dist/cli.js config set stuckAfterMinutes 5
+agent-traffic-light-monitor config set notifyOnComplete false
+agent-traffic-light-monitor config set notifyOnError true
+agent-traffic-light-monitor config set notifyOnStuck true
+agent-traffic-light-monitor config set stuckAfterMinutes 5
 ```
 
 可用配置项：
@@ -121,15 +128,15 @@ agent
 ## 常用命令
 
 ```bash
-node dist/cli.js init
-node dist/cli.js watch
-node dist/cli.js status
-node dist/cli.js statusline
-node dist/cli.js history
-node dist/cli.js config show
-node dist/cli.js config set notifyOnComplete false
-node dist/cli.js config-ui
-node dist/cli.js doctor
+agent-traffic-light-monitor init
+agent-traffic-light-monitor watch
+agent-traffic-light-monitor status
+agent-traffic-light-monitor statusline
+agent-traffic-light-monitor history
+agent-traffic-light-monitor config show
+agent-traffic-light-monitor config set notifyOnComplete false
+agent-traffic-light-monitor config-ui
+agent-traffic-light-monitor doctor
 ```
 
 ## 开发命令
@@ -150,22 +157,22 @@ npm run build
 黄灯状态：
 
 ```bash
-printf '%s' '{"tool_name":"Bash","tool_input":{"command":"npm test"}}' | node dist/cli.js hook pre-tool-use
-node dist/cli.js status
+printf '%s' '{"tool_name":"Bash","tool_input":{"command":"npm test"}}' | agent-traffic-light-monitor hook pre-tool-use
+agent-traffic-light-monitor status
 ```
 
 红灯状态：
 
 ```bash
-printf '%s' '{"tool_name":"Bash","tool_input":{"command":"npm test"},"tool_response":{"stderr":"tests failed"}}' | node dist/cli.js hook post-tool-use
-node dist/cli.js status
+printf '%s' '{"tool_name":"Bash","tool_input":{"command":"npm test"},"tool_response":{"stderr":"tests failed"}}' | agent-traffic-light-monitor hook post-tool-use
+agent-traffic-light-monitor status
 ```
 
 绿灯状态：
 
 ```bash
-node dist/cli.js hook stop
-node dist/cli.js status
+agent-traffic-light-monitor hook stop
+agent-traffic-light-monitor status
 ```
 
 ## VS Code Claude Code 使用方式
@@ -176,13 +183,13 @@ node dist/cli.js status
 ```bash
 npm install
 npm run build
-node dist/cli.js init
+agent-traffic-light-monitor init
 ```
 
 3. 启动实时状态终端：
 
 ```bash
-node dist/cli.js watch
+agent-traffic-light-monitor watch
 ```
 
 4. 重启 VS Code 中的 Claude Code 会话，让它重新加载 `.claude/settings.json`。
@@ -195,7 +202,7 @@ node dist/cli.js watch
 运行：
 
 ```bash
-node dist/cli.js doctor
+agent-traffic-light-monitor doctor
 ```
 
 `doctor` 会检查：
@@ -209,21 +216,21 @@ node dist/cli.js doctor
 如果状态没有变化：
 
 1. 运行 `npm run build`。
-2. 运行 `node dist/cli.js init`。
+2. 运行 `agent-traffic-light-monitor init`。
 3. 重启 VS Code 中的 Claude Code 会话。
-4. 在另一个终端运行 `node dist/cli.js watch`。
+4. 在另一个终端运行 `agent-traffic-light-monitor watch`。
 5. 让 Claude Code 读取或编辑一个文件，以触发 hooks。
 
 如果桌面通知太频繁，运行：
 
 ```bash
-node dist/cli.js config-ui
+agent-traffic-light-monitor config-ui
 ```
 
 然后关闭完成通知，或调整卡住检测时间。
 
 ## 数据与隐私
 
-Agent Pulse 的数据默认保存在本地 `.agent-pulse/` 目录。
+Agent Traffic Light Monitor 的数据默认保存在本地 `.agent-pulse/` 目录。
 
 当前 MVP 不会上传代码、prompt、终端输出或项目数据到任何服务器。

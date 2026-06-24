@@ -8,17 +8,18 @@ import { initCommand } from './commands/init.js';
 import { statusCommand } from './commands/status.js';
 import { statuslineCommand } from './commands/statusline.js';
 import { watchCommand } from './commands/watch.js';
+import { VERSION } from './version.js';
 
 const program = new Command();
 
 program
-  .name('agent-pulse')
+  .name('agent-traffic-light-monitor')
   .description('A status light and alerting layer for Claude Code and AI coding agents.')
-  .version('0.1.0');
+  .version(VERSION);
 
 program
   .command('init')
-  .description('Initialize Agent Pulse in the current project')
+  .description('Initialize Agent Traffic Light Monitor in the current project')
   .action(async () => {
     await initCommand();
   });
@@ -32,7 +33,7 @@ program
 
 program
   .command('history')
-  .description('Show recent Agent Pulse events')
+  .description('Show recent Agent Traffic Light Monitor events')
   .option('-n, --limit <number>', 'number of events to show', '20')
   .action(async (options: { limit: string }) => {
     await historyCommand(Number.parseInt(options.limit, 10));
@@ -62,7 +63,7 @@ program
 
 program
   .command('config-ui')
-  .description('Open the local Agent Pulse configuration UI')
+  .description('Open the local Agent Traffic Light Monitor configuration UI')
   .option('-p, --port <number>', 'port to run the config UI on', '4321')
   .action(async (options: { port: string }) => {
     await configUiCommand(Number.parseInt(options.port, 10));
@@ -70,7 +71,7 @@ program
 
 const configCommand = program
   .command('config')
-  .description(`Manage Agent Pulse config. Keys: ${listConfigKeys().join(', ')}`);
+  .description(`Manage Agent Traffic Light Monitor config. Keys: ${listConfigKeys().join(', ')}`);
 
 configCommand
   .command('show [key]')
@@ -88,7 +89,7 @@ configCommand
 
 program
   .command('doctor')
-  .description('Check Agent Pulse and Claude Code integration setup')
+  .description('Check Agent Traffic Light Monitor and Claude Code integration setup')
   .action(async () => {
     await doctorCommand();
   });

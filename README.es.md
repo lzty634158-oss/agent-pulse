@@ -1,8 +1,8 @@
-# Agent Pulse
+# Agent Traffic Light Monitor
 
 Idioma: [English](README.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Deutsch](README.de.md) | Español
 
-Agent Pulse es una herramienta local de luces de estado y alertas para Claude Code y agentes de programación con IA.
+Agent Traffic Light Monitor es una herramienta local de luces de estado y alertas para Claude Code y agentes de programación con IA.
 
 Muestra el estado de Claude Code:
 
@@ -20,11 +20,18 @@ Muestra el estado de Claude Code:
 - UI local de configuración en el navegador
 - Diagnóstico de instalación
 
-## Instalar desde el código fuente
+## Instalación
+
+Instala globalmente:
 
 ```bash
-npm install
-npm run build
+npm install -g agent-traffic-light-monitor
+```
+
+O ejecútalo sin instalación global:
+
+```bash
+npx agent-traffic-light-monitor --help
 ```
 
 ## Inicializar un proyecto
@@ -32,10 +39,10 @@ npm run build
 Ejecuta esto en el proyecto que quieres monitorear:
 
 ```bash
-node dist/cli.js init
+agent-traffic-light-monitor init
 ```
 
-Agent Pulse pregunta las preferencias de notificación y escribe:
+Agent Traffic Light Monitor pregunta las preferencias de notificación y escribe:
 
 ```text
 .agent-pulse/config.json
@@ -51,17 +58,17 @@ Agent Pulse pregunta las preferencias de notificación y escribe:
 Abre una segunda terminal en el proyecto y ejecuta:
 
 ```bash
-node dist/cli.js watch
+agent-traffic-light-monitor watch
 ```
 
 Luego usa Claude Code normalmente en el mismo proyecto.
 
-## Configurar Agent Pulse
+## Configurar Agent Traffic Light Monitor
 
 ### UI local en el navegador
 
 ```bash
-node dist/cli.js config-ui
+agent-traffic-light-monitor config-ui
 ```
 
 Abre:
@@ -77,12 +84,12 @@ Pulsa `Ctrl+C` en la terminal que ejecuta `config-ui` para detener el servidor l
 ### Configuración por CLI
 
 ```bash
-node dist/cli.js config show
-node dist/cli.js config show notifyOnComplete
-node dist/cli.js config set notifyOnComplete false
-node dist/cli.js config set notifyOnError true
-node dist/cli.js config set notifyOnStuck true
-node dist/cli.js config set stuckAfterMinutes 5
+agent-traffic-light-monitor config show
+agent-traffic-light-monitor config show notifyOnComplete
+agent-traffic-light-monitor config set notifyOnComplete false
+agent-traffic-light-monitor config set notifyOnError true
+agent-traffic-light-monitor config set notifyOnStuck true
+agent-traffic-light-monitor config set stuckAfterMinutes 5
 ```
 
 Claves disponibles:
@@ -100,15 +107,15 @@ agent
 ## Comandos
 
 ```bash
-node dist/cli.js init
-node dist/cli.js watch
-node dist/cli.js status
-node dist/cli.js statusline
-node dist/cli.js history
-node dist/cli.js config show
-node dist/cli.js config set notifyOnComplete false
-node dist/cli.js config-ui
-node dist/cli.js doctor
+agent-traffic-light-monitor init
+agent-traffic-light-monitor watch
+agent-traffic-light-monitor status
+agent-traffic-light-monitor statusline
+agent-traffic-light-monitor history
+agent-traffic-light-monitor config show
+agent-traffic-light-monitor config set notifyOnComplete false
+agent-traffic-light-monitor config-ui
+agent-traffic-light-monitor doctor
 ```
 
 ## Comandos de desarrollo
@@ -128,22 +135,22 @@ npm run build
 Estado amarillo:
 
 ```bash
-printf '%s' '{"tool_name":"Bash","tool_input":{"command":"npm test"}}' | node dist/cli.js hook pre-tool-use
-node dist/cli.js status
+printf '%s' '{"tool_name":"Bash","tool_input":{"command":"npm test"}}' | agent-traffic-light-monitor hook pre-tool-use
+agent-traffic-light-monitor status
 ```
 
 Estado rojo:
 
 ```bash
-printf '%s' '{"tool_name":"Bash","tool_input":{"command":"npm test"},"tool_response":{"stderr":"tests failed"}}' | node dist/cli.js hook post-tool-use
-node dist/cli.js status
+printf '%s' '{"tool_name":"Bash","tool_input":{"command":"npm test"},"tool_response":{"stderr":"tests failed"}}' | agent-traffic-light-monitor hook post-tool-use
+agent-traffic-light-monitor status
 ```
 
 Estado verde:
 
 ```bash
-node dist/cli.js hook stop
-node dist/cli.js status
+agent-traffic-light-monitor hook stop
+agent-traffic-light-monitor status
 ```
 
 ## Uso con VS Code Claude Code
@@ -154,13 +161,13 @@ node dist/cli.js status
 ```bash
 npm install
 npm run build
-node dist/cli.js init
+agent-traffic-light-monitor init
 ```
 
 3. Inicia la terminal de estado:
 
 ```bash
-node dist/cli.js watch
+agent-traffic-light-monitor watch
 ```
 
 4. Reinicia la sesión de Claude Code en VS Code para recargar `.claude/settings.json`.
@@ -171,13 +178,13 @@ Los cambios de estado aparecen en la terminal `watch` y en la status line de Cla
 ## Solución de problemas
 
 ```bash
-node dist/cli.js doctor
+agent-traffic-light-monitor doctor
 ```
 
 `doctor` revisa `.agent-pulse`, `dist/cli.js`, `.claude/settings.json`, statusLine y hooks.
 
-Si el estado no cambia: ejecuta `npm run build`, `node dist/cli.js init`, reinicia la sesión de Claude Code en VS Code y ejecuta `node dist/cli.js watch` en otra terminal.
+Si el estado no cambia: ejecuta `npm run build`, `agent-traffic-light-monitor init`, reinicia la sesión de Claude Code en VS Code y ejecuta `agent-traffic-light-monitor watch` en otra terminal.
 
 ## Datos y privacidad
 
-Agent Pulse guarda los datos localmente en `.agent-pulse/`. El MVP actual no sube código, prompts, salida de terminal ni datos del proyecto a ningún servidor.
+Agent Traffic Light Monitor guarda los datos localmente en `.agent-pulse/`. El MVP actual no sube código, prompts, salida de terminal ni datos del proyecto a ningún servidor.

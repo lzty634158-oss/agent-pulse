@@ -27,12 +27,12 @@ export async function initCommand(): Promise<void> {
     timestamp: new Date().toISOString(),
     status: 'green',
     event: 'initialized',
-    message: 'Agent Pulse initialized',
+    message: 'Agent Traffic Light Monitor initialized',
   });
 
   const claudeSettingsPath = await installClaudeCodeIntegration();
 
-  console.log('Agent Pulse initialized.');
+  console.log('Agent Traffic Light Monitor initialized.');
   console.log('');
   console.log('Created:');
   console.log('- .agent-pulse/config.json');
@@ -41,5 +41,5 @@ export async function initCommand(): Promise<void> {
   console.log(`- ${claudeSettingsPath}`);
   console.log('');
   console.log('Next:');
-  console.log('Run agent-pulse watch in another terminal, then use Claude Code in this project.');
+  console.log('Run agent-traffic-light-monitor watch in another terminal, then use Claude Code in this project.');
 }

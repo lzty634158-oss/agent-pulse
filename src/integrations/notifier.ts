@@ -7,7 +7,7 @@ export function notifyStatus(status: PulseStatus): void {
   }
 
   notifier.notify({
-    title: 'Agent Pulse',
+    title: 'Agent Traffic Light Monitor',
     message: status.status === 'green' ? 'Claude Code finished. Ready to review.' : status.message,
     wait: false,
   });
@@ -15,7 +15,7 @@ export function notifyStatus(status: PulseStatus): void {
 
 export function notifyStuck(status: PulseStatus, minutes: number): void {
   notifier.notify({
-    title: 'Agent Pulse',
+    title: 'Agent Traffic Light Monitor',
     message: `${status.message} has been running for more than ${minutes} minutes.`,
     wait: false,
   });

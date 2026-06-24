@@ -9,7 +9,7 @@ export function createInitialStatus(): PulseStatus {
     status: 'green',
     agent: 'claude-code',
     event: 'initialized',
-    message: 'Agent Pulse initialized',
+    message: 'Agent Traffic Light Monitor initialized',
     startedAt: now,
     updatedAt: now,
   };
