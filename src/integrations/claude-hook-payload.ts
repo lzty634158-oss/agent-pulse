@@ -7,6 +7,7 @@ export interface ParsedHookPayload {
   notification?: string;
   notificationTitle?: string;
   notificationType?: string;
+  permissionSuggestions?: string;
   error?: string;
   lastAssistantMessage?: string;
   rawDetail?: string;
@@ -35,6 +36,18 @@ function firstString(...values: Array<string | undefined>): string | undefined {
   return values.find((value) => value !== undefined && value.trim().length > 0);
 }
 
+function stringArrayField(object: JsonObject, key: string): string | undefined {
+  const value = object[key];
+  if (!Array.isArray(value)) return undefined;
+  const strings = value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0);
+  return strings.length > 0 ? strings.join(', ') : undefined;
+}
+
+export function isPermissionOrInputMessage(parsed: ParsedHookPayload): boolean {
+  const text = [parsed.notificationTitle, parsed.notificationType, parsed.notification, parsed.rawDetail].filter(Boolean).join(' ').toLowerCase();
+  return ['permission', 'approve', 'approval', 'confirm', 'confirmation', 'input required', 'needs your permission', '需要', '确认', '批准', '权限'].some((keyword) => text.includes(keyword));
+}
+
 export function parseClaudeHookPayload(payload: unknown): ParsedHookPayload {
   if (!isObject(payload)) {
     return {};
@@ -52,6 +65,7 @@ export function parseClaudeHookPayload(payload: unknown): ParsedHookPayload {
     notification: stringField(payload, 'message') ?? stringField(payload, 'notification'),
     notificationTitle: stringField(payload, 'title'),
     notificationType: stringField(payload, 'notification_type') ?? stringField(payload, 'notificationType'),
+    permissionSuggestions: stringArrayField(payload, 'permission_suggestions') ?? stringArrayField(payload, 'permissionSuggestions'),
     error: firstString(stringField(payload, 'error'), stderr, toolResponse ? stringField(toolResponse, 'error') : undefined, toolResponse ? stringField(toolResponse, 'message') : undefined, interrupted ? 'Tool was interrupted' : undefined),
     lastAssistantMessage: stringField(payload, 'last_assistant_message') ?? stringField(payload, 'lastAssistantMessage'),
     rawDetail: stringField(payload, 'detail'),
@@ -73,6 +87,14 @@ export function buildHookDetail(parsed: ParsedHookPayload, fallback?: string): s
 
   if (parsed.filePath) {
     return parsed.filePath;
+  }
+
+  if (parsed.permissionSuggestions && parsed.toolName) {
+    return `${parsed.toolName}: ${parsed.permissionSuggestions}`;
+  }
+
+  if (parsed.permissionSuggestions) {
+    return parsed.permissionSuggestions;
   }
 
   if (parsed.notificationTitle && parsed.notification) {
@@ -104,6 +126,11 @@ export function buildHookMessage(event: string, parsed: ParsedHookPayload): stri
     if (parsed.command) return `Finished ${parsed.command}`;
     if (parsed.filePath) return `Finished ${tool} ${parsed.filePath}`;
     return `Finished ${tool}`;
+  }
+
+  if (event === 'permission-request') {
+    if (parsed.command) return `Waiting for permission: ${parsed.command}`;
+    return `Waiting for permission to use ${tool}`;
   }
 
   if (event === 'notification') {

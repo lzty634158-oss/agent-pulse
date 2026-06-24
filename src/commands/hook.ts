@@ -1,6 +1,6 @@
 import { readStdinJson } from '../core/stdin.js';
 import { updateStatus } from '../core/update-status.js';
-import { buildHookDetail, buildHookMessage, parseClaudeHookPayload } from '../integrations/claude-hook-payload.js';
+import { buildHookDetail, buildHookMessage, isPermissionOrInputMessage, parseClaudeHookPayload } from '../integrations/claude-hook-payload.js';
 import type { AgentStatus } from '../types/status.js';
 
 interface HookMapping {
@@ -12,6 +12,7 @@ const hookMappings: Record<string, HookMapping> = {
   'session-start': { status: 'green', message: 'Claude Code session started' },
   'pre-tool-use': { status: 'yellow', message: 'Claude Code is using a tool' },
   'post-tool-use': { status: 'yellow', message: 'Claude Code finished a tool call' },
+  'permission-request': { status: 'red', message: 'Claude Code is waiting for permission' },
   stop: { status: 'green', message: 'Claude Code stopped. Ready to review.' },
   notification: { status: 'red', message: 'Claude Code needs attention' },
   error: { status: 'red', message: 'Claude Code hit an error' },
@@ -29,7 +30,7 @@ export async function hookCommand(event: string, detail?: string): Promise<void>
   const parsedPayload = parseClaudeHookPayload(payload);
   const message = buildHookMessage(normalizedEvent, parsedPayload) || mapping.message;
   const resolvedDetail = buildHookDetail(parsedPayload, detail);
-  const status = normalizedEvent === 'post-tool-use' && parsedPayload.error ? 'red' : mapping.status;
+  const status = normalizedEvent === 'post-tool-use' && parsedPayload.error ? 'red' : normalizedEvent === 'notification' && isPermissionOrInputMessage(parsedPayload) ? 'red' : mapping.status;
 
   await updateStatus({
     status,

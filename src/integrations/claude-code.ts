@@ -25,6 +25,7 @@ interface ClaudeSettings {
 const hookEvents: Record<string, string> = {
   PreToolUse: 'pre-tool-use',
   PostToolUse: 'post-tool-use',
+  PermissionRequest: 'permission-request',
   Notification: 'notification',
   Stop: 'stop',
 };
