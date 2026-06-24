@@ -6,9 +6,9 @@ Agent Pulse ist ein lokales Statuslicht- und Benachrichtigungstool für Claude C
 
 Es zeigt den Status von Claude Code an:
 
-- Grün: Leerlauf, abgeschlossen oder bereit zur Review
-- Gelb: arbeitet oder führt ein Tool aus
-- Rot: blockiert, fehlgeschlagen oder benötigt Aufmerksamkeit
+- Grün: im Leerlauf oder bereit zur Review, nachdem Claude Code gestoppt hat
+- Gelb: Claude Code ist aktiv, führt ein Tool aus oder denkt nach einem Tool-Aufruf weiter
+- Rot: blockiert, fehlgeschlagen, wartet auf Berechtigung oder benötigt Aufmerksamkeit
 
 ## Aktuelle MVP-Funktionen
 

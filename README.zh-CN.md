@@ -6,9 +6,9 @@ Agent Pulse 是一个面向 Claude Code 和 AI 编程助手的本地状态灯与
 
 它可以显示 Claude Code 当前状态：
 
-- 绿灯：空闲、完成、等待 review
-- 黄灯：正在工作、正在调用工具
-- 红灯：阻塞、失败、需要用户介入
+- 绿灯：Claude Code 停止后空闲、等待 review
+- 黄灯：Claude Code 正在工作、正在调用工具，或工具结束后仍在思考
+- 红灯：阻塞、失败、等待权限、需要用户介入
 
 ## 当前 MVP 功能
 

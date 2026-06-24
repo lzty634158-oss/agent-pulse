@@ -30,7 +30,7 @@ async function renderCurrentStatus(): Promise<void> {
     return;
   }
 
-  const shouldNotifyComplete = status.status === 'green' && config.notifyOnComplete;
+  const shouldNotifyComplete = status.event === 'stop' && status.status === 'green' && config.notifyOnComplete;
   const shouldNotifyError = status.status === 'red' && config.notifyOnError;
 
   if (status.updatedAt !== lastNotifiedUpdatedAt && (shouldNotifyComplete || shouldNotifyError)) {
@@ -58,7 +58,9 @@ export async function watchCommand(): Promise<void> {
   });
 
   watcher.on('change', async () => {
-    await renderCurrentStatus();
+    await renderCurrentStatus().catch((error: unknown) => {
+      console.error(error instanceof Error ? error.message : error);
+    });
   });
 
   process.on('SIGINT', async () => {

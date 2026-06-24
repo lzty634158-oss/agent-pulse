@@ -6,9 +6,9 @@ Agent Pulse est un outil local de voyant d’état et d’alertes pour Claude Co
 
 Il indique l’état de Claude Code :
 
-- Vert : inactif, terminé ou prêt pour la revue
-- Jaune : en cours de travail ou d’exécution d’un outil
-- Rouge : bloqué, en échec ou nécessite votre attention
+- Vert : inactif ou prêt pour la revue après l’arrêt de Claude Code
+- Jaune : Claude Code est actif, exécute un outil ou réfléchit après un appel d’outil
+- Rouge : bloqué, en échec, en attente d’autorisation ou nécessite votre attention
 
 ## Fonctionnalités MVP actuelles
 

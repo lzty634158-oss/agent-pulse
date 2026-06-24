@@ -10,8 +10,8 @@ interface HookMapping {
 
 const hookMappings: Record<string, HookMapping> = {
   'session-start': { status: 'green', message: 'Claude Code session started' },
-  'pre-tool-use': { status: 'red', message: 'Claude Code is waiting for tool approval or execution' },
-  'post-tool-use': { status: 'yellow', message: 'Claude Code finished a tool call' },
+  'pre-tool-use': { status: 'yellow', message: 'Claude Code is running a tool' },
+  'post-tool-use': { status: 'yellow', message: 'Claude Code is thinking after a tool call' },
   'permission-request': { status: 'red', message: 'Claude Code is waiting for permission' },
   stop: { status: 'green', message: 'Claude Code stopped. Ready to review.' },
   notification: { status: 'red', message: 'Claude Code needs attention' },

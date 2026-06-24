@@ -6,9 +6,9 @@ Agent Pulse is a local status light and alerting layer for Claude Code and AI co
 
 It shows whether Claude Code is:
 
-- Green: idle, finished, or ready for review
-- Yellow: working or running a tool
-- Red: blocked, failed, or needs your attention
+- Green: idle or ready for review after Claude Code stops
+- Yellow: Claude Code is active, running a tool, or thinking after a tool call
+- Red: blocked, failed, waiting for permission, or needs your attention
 
 ## Current MVP
 
@@ -217,7 +217,7 @@ If status does not change:
 
 If you have multiple `.agent-pulse/status.json` files, make sure `watch` is reading the one inside the project you are currently using with Claude Code.
 
-Tool approval and permission prompts are treated as attention states. `PreToolUse` and `PermissionRequest` should show red until the tool completes or Claude stops.
+Permission prompts and notifications are treated as attention states. `PreToolUse` and successful `PostToolUse` stay yellow until Claude Code stops, while permission requests and failed tool calls show red.
 
 If desktop notifications are noisy, run:
 

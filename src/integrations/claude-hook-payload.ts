@@ -116,16 +116,16 @@ export function buildHookMessage(event: string, parsed: ParsedHookPayload): stri
   const tool = parsed.toolName ?? 'tool';
 
   if (event === 'pre-tool-use') {
-    if (parsed.command) return `Waiting to run ${parsed.command}`;
-    if (parsed.filePath) return `Waiting to use ${tool} ${parsed.filePath}`;
-    return `Waiting to use ${tool}`;
+    if (parsed.command) return `Running ${parsed.command}`;
+    if (parsed.filePath) return `Using ${tool} ${parsed.filePath}`;
+    return `Using ${tool}`;
   }
 
   if (event === 'post-tool-use') {
     if (parsed.error) return `${tool} failed`;
-    if (parsed.command) return `Finished ${parsed.command}`;
-    if (parsed.filePath) return `Finished ${tool} ${parsed.filePath}`;
-    return `Finished ${tool}`;
+    if (parsed.command) return `Finished ${parsed.command}. Claude Code is thinking.`;
+    if (parsed.filePath) return `Finished ${tool} ${parsed.filePath}. Claude Code is thinking.`;
+    return `Finished ${tool}. Claude Code is thinking.`;
   }
 
   if (event === 'permission-request') {
