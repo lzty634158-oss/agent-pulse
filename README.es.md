@@ -21,6 +21,12 @@ Muestra el estado de Claude Code:
 - Diagnóstico de instalación
 - Prototipo de hardware: luz de estado por USB-serie (ESP32-C3 Mini 1, experimental)
 
+## Cambios destacados por versión
+
+- **0.2.2**: La luz de hardware parpadea en amarillo mientras Claude trabaja o piensa, y vuelve a verde fijo cuando termina. También envía datos serie más pequeños para que las actualizaciones del LED sean más fiables.
+- **0.2.0**: Añadido soporte para una luz de hardware ESP32-C3 Mini 1 por USB-serie, incluyendo comandos `device` y `watch --device`.
+- **0.1.1**: Añadida la CLI instalable con hooks de Claude Code, vista de estado en terminal, notificaciones de escritorio, UI de configuración y comando de diagnóstico.
+
 ## Instalación
 
 Instala globalmente:

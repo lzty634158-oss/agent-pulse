@@ -23,6 +23,12 @@ This MVP supports:
 - Setup diagnostics
 - Hardware prototype: USB-serial status lamp (ESP32-C3, experimental)
 
+## Version highlights
+
+- **0.2.2**: The hardware lamp now blinks yellow while Claude is working or thinking, turns solid green when finished, and sends a smaller serial payload for more reliable LED updates.
+- **0.2.0**: Added ESP32-C3 Mini 1 hardware lamp support over USB serial, including `device` commands and `watch --device`.
+- **0.1.1**: Added the installable CLI with Claude Code hooks, terminal status view, desktop notifications, config UI, and setup diagnostics.
+
 ## Install
 
 Install globally:

@@ -21,6 +21,12 @@ Il indique l’état de Claude Code :
 - Diagnostic d’installation
 - Prototype matériel : voyant d’état USB-série (ESP32-C3 Mini 1, expérimental)
 
+## Points forts des versions
+
+- **0.2.2** : Le voyant matériel clignote en jaune pendant que Claude travaille ou réfléchit, puis passe au vert fixe quand il a terminé. Les données série envoyées sont plus petites, ce qui rend les mises à jour LED plus fiables.
+- **0.2.0** : Ajout du support d’un voyant matériel ESP32-C3 Mini 1 via USB-série, avec les commandes `device` et `watch --device`.
+- **0.1.1** : Ajout de la CLI installable avec hooks Claude Code, vue d’état dans le terminal, notifications de bureau, interface de configuration et commande de diagnostic.
+
 ## Installation
 
 Installez globalement :

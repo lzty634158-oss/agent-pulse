@@ -21,6 +21,12 @@ Es zeigt den Status von Claude Code an:
 - Setup-Diagnose
 - Hardware-Prototyp: USB-Seriell-Statuslampe (ESP32-C3 Mini 1, experimentell)
 
+## Versions-Highlights
+
+- **0.2.2**: Die Hardware-Lampe blinkt gelb, während Claude arbeitet oder nachdenkt, und leuchtet nach Abschluss dauerhaft grün. Sie sendet außerdem kleinere serielle Daten für stabilere LED-Updates.
+- **0.2.0**: Unterstützung für eine ESP32-C3 Mini 1 Hardware-Lampe per USB-Seriell hinzugefügt, inklusive `device`-Befehlen und `watch --device`.
+- **0.1.1**: Installierbare CLI mit Claude Code hooks, Terminal-Statusansicht, Desktop-Benachrichtigungen, Konfigurations-UI und Diagnosebefehl.
+
 ## Installation
 
 Global installieren:
