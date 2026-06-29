@@ -161,37 +161,15 @@ agent-traffic-light-monitor device watch --port COM5
 
 狀態到 LED 顏色對應：`green` → 綠，`yellow` → 黃，`red` → 紅，其他 → 藍（安全兜底）。
 
-## VS Code Claude Code 使用方式
-
-1. 在 VS Code 中開啟目前專案。
-2. 執行：
-
-```bash
-npm install
-npm run build
-agent-traffic-light-monitor init
-```
-
-3. 啟動即時狀態終端：
-
-```bash
-agent-traffic-light-monitor watch
-```
-
-4. 重新啟動 VS Code 中的 Claude Code 會話，讓它重新載入 `.claude/settings.json`。
-5. 正常使用 Claude Code。
-
-狀態變化會顯示在 `watch` 終端和 Claude Code status line 中。目前 MVP 不會修改 VS Code 底部原生狀態列。
-
 ## 排錯
 
 ```bash
 agent-traffic-light-monitor doctor
 ```
 
-`doctor` 會檢查 `.agent-pulse`、`dist/cli.js`、`.claude/settings.json`、statusLine 和 hooks 設定。
+`doctor` 會檢查 `.agent-pulse`、CLI 命令、`.claude/settings.json`、statusLine 和 hooks 設定。
 
-如果狀態沒有變化：執行 `npm run build`、`agent-traffic-light-monitor init`，重啟 VS Code 中的 Claude Code 會話，然後在另一個終端執行 `agent-traffic-light-monitor watch`。
+如果狀態沒有變化：確認你在要監控的專案目錄，執行 `agent-traffic-light-monitor init`，重啟 Claude Code 會話，然後在另一個終端執行 `agent-traffic-light-monitor watch`。
 
 ## 資料與隱私
 

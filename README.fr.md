@@ -196,37 +196,15 @@ agent-traffic-light-monitor hook stop
 agent-traffic-light-monitor status
 ```
 
-## Utilisation avec VS Code Claude Code
-
-1. Ouvrez ce projet dans VS Code.
-2. Exécutez :
-
-```bash
-npm install
-npm run build
-agent-traffic-light-monitor init
-```
-
-3. Lancez le terminal de surveillance :
-
-```bash
-agent-traffic-light-monitor watch
-```
-
-4. Redémarrez la session Claude Code dans VS Code pour recharger `.claude/settings.json`.
-5. Utilisez Claude Code normalement.
-
-Les changements d’état apparaissent dans le terminal `watch` et dans la status line Claude Code. Ce MVP ne modifie pas la barre d’état native de VS Code.
-
 ## Dépannage
 
 ```bash
 agent-traffic-light-monitor doctor
 ```
 
-`doctor` vérifie `.agent-pulse`, `dist/cli.js`, `.claude/settings.json`, statusLine et hooks.
+`doctor` vérifie `.agent-pulse`, la commande CLI, `.claude/settings.json`, statusLine et hooks.
 
-Si l’état ne change pas : exécutez `npm run build`, `agent-traffic-light-monitor init`, redémarrez la session Claude Code dans VS Code, puis lancez `agent-traffic-light-monitor watch` dans un autre terminal.
+Si l’état ne change pas : vérifiez que vous êtes dans le projet à surveiller, exécutez `agent-traffic-light-monitor init`, redémarrez la session Claude Code, puis lancez `agent-traffic-light-monitor watch` dans un autre terminal.
 
 ## Données et confidentialité
 

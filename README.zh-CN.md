@@ -218,28 +218,6 @@ agent-traffic-light-monitor hook stop
 agent-traffic-light-monitor status
 ```
 
-## VS Code Claude Code 使用方式
-
-1. 在 VS Code 中打开当前项目。
-2. 运行：
-
-```bash
-npm install
-npm run build
-agent-traffic-light-monitor init
-```
-
-3. 启动实时状态终端：
-
-```bash
-agent-traffic-light-monitor watch
-```
-
-4. 重启 VS Code 中的 Claude Code 会话，让它重新加载 `.claude/settings.json`。
-5. 正常使用 Claude Code。
-
-状态变化会显示在 `watch` 终端和 Claude Code status line 中。当前 MVP 不会修改 VS Code 底部原生状态栏。
-
 ## 排错
 
 运行：
@@ -251,16 +229,16 @@ agent-traffic-light-monitor doctor
 `doctor` 会检查：
 
 - `.agent-pulse` 文件是否存在
-- `dist/cli.js` 是否存在
+- CLI 命令是否可用
 - `.claude/settings.json` 是否存在
 - Claude Code statusLine 是否配置
 - Claude Code hooks 是否配置
 
 如果状态没有变化：
 
-1. 运行 `npm run build`。
+1. 确认你在要监控的项目目录。
 2. 运行 `agent-traffic-light-monitor init`。
-3. 重启 VS Code 中的 Claude Code 会话。
+3. 重启 Claude Code 会话，让它重新加载 `.claude/settings.json`。
 4. 在另一个终端运行 `agent-traffic-light-monitor watch`。
 5. 让 Claude Code 读取或编辑一个文件，以触发 hooks。
 

@@ -203,41 +203,19 @@ agent-traffic-light-monitor hook stop
 agent-traffic-light-monitor status
 ```
 
-## VS Code Claude Code での使い方
-
-1. VS Code でプロジェクトを開きます。
-2. 実行します。
-
-```bash
-npm install
-npm run build
-agent-traffic-light-monitor init
-```
-
-3. 監視用ターミナルを起動します。
-
-```bash
-agent-traffic-light-monitor watch
-```
-
-4. VS Code の Claude Code セッションを再起動して、`.claude/settings.json` を再読み込みします。
-5. Claude Code を通常どおり使用します。
-
-状態は `watch` ターミナルと Claude Code status line に表示されます。この MVP は VS Code ネイティブの下部ステータスバーは変更しません。
-
 ## トラブルシューティング
 
 ```bash
 agent-traffic-light-monitor doctor
 ```
 
-`doctor` は `.agent-pulse`、`dist/cli.js`、`.claude/settings.json`、statusLine、hooks を確認します。
+`doctor` は `.agent-pulse`、CLI コマンド、`.claude/settings.json`、statusLine、hooks を確認します。
 
 状態が変わらない場合:
 
-1. `npm run build` を実行します。
+1. 監視したいプロジェクトディレクトリにいることを確認します。
 2. `agent-traffic-light-monitor init` を実行します。
-3. VS Code の Claude Code セッションを再起動します。
+3. Claude Code セッションを再起動して `.claude/settings.json` を再読み込みします。
 4. 別のターミナルで `agent-traffic-light-monitor watch` を実行します。
 5. Claude Code にファイルの読み取りや編集を依頼して hooks を発火させます。
 
