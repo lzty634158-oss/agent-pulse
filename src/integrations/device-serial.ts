@@ -93,9 +93,9 @@ export async function openDevice(path: string, baudRate = DEFAULT_BAUD): Promise
 }
 
 export async function pushStatus(port: SerialPort, status: PulseStatus): Promise<void> {
-  // The firmware parser is line-based: it only acts on a '\n'.
-  // The "\n" here is what makes the board light up.
-  const line = `${JSON.stringify(status)}\n`;
+  // The device only needs the color state; keeping the serial frame small
+  // avoids dropping long Stop messages that include Claude's final response.
+  const line = `${JSON.stringify({ status: status.status })}\n`;
   await new Promise<void>((resolve, reject) => {
     port.write(line, (err) => (err ? reject(err) : resolve()));
   });

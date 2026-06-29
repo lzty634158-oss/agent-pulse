@@ -12,8 +12,12 @@
 
 #define BAUD 115200
 #define MAX_LINE 1024
+#define YELLOW_BLINK_MS 500
 
 String buf;
+String currentStatus = "off";
+bool yellowBlinkOn = false;
+unsigned long lastYellowBlinkMs = 0;
 
 void setup() {
   pinMode(PIN_R, OUTPUT);
@@ -32,24 +36,56 @@ void setColor(int r, int g, int b) {
 }
 
 void setStatusColor(const String& status) {
-  if (status == "green")       setColor(0, 1, 0);
-  else if (status == "yellow") setColor(1, 1, 0);
-  else if (status == "red")    setColor(1, 0, 0);
-  else                          setColor(0, 0, 1);
+  currentStatus = status;
+  if (status == "green") {
+    setColor(0, 1, 0);
+  } else if (status == "yellow") {
+    yellowBlinkOn = true;
+    lastYellowBlinkMs = millis();
+    setColor(1, 1, 0);
+  } else if (status == "red") {
+    setColor(1, 0, 0);
+  } else {
+    setColor(0, 0, 1);
+  }
+}
+
+void updateBlink() {
+  if (currentStatus != "yellow") {
+    return;
+  }
+
+  unsigned long now = millis();
+  if (now - lastYellowBlinkMs < YELLOW_BLINK_MS) {
+    return;
+  }
+
+  lastYellowBlinkMs = now;
+  yellowBlinkOn = !yellowBlinkOn;
+  if (yellowBlinkOn) {
+    setColor(1, 1, 0);
+  } else {
+    setColor(0, 0, 0);
+  }
+}
+
+void applyStatusFromLine() {
+  if (buf.indexOf("\"status\":\"green\"") >= 0) {
+    setStatusColor("green");
+  } else if (buf.indexOf("\"status\":\"yellow\"") >= 0) {
+    setStatusColor("yellow");
+  } else if (buf.indexOf("\"status\":\"red\"") >= 0) {
+    setStatusColor("red");
+  } else {
+    setStatusColor("unknown");
+  }
 }
 
 void loop() {
   while (Serial.available()) {
     char c = Serial.read();
     if (c == '\n') {
-      int idx = buf.indexOf("\"status\":\"");
-      if (idx >= 0) {
-        int start = idx + 10;
-        int end = buf.indexOf('"', start);
-        if (end > start) {
-          setStatusColor(buf.substring(start, end));
-        }
-      }
+      applyStatusFromLine();
       buf = "";
     } else if (c != '\r') {
       buf += c;
@@ -58,4 +94,6 @@ void loop() {
       }
     }
   }
+
+  updateBlink();
 }

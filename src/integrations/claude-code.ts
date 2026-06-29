@@ -23,6 +23,7 @@ interface ClaudeSettings {
 }
 
 const hookEvents: Record<string, string> = {
+  UserPromptSubmit: 'user-prompt-submit',
   PreToolUse: 'pre-tool-use',
   PostToolUse: 'post-tool-use',
   PermissionRequest: 'permission-request',

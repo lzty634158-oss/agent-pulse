@@ -64,23 +64,23 @@ arduino-cli upload -p COM3 --fqbn esp32:esp32:esp32c3 firmware/agent-pulse-lamp.
 
 ## Protocol
 
-The firmware reads one JSON object per line, terminated by `\n`. The only field it looks at is `status`:
+The firmware reads one small JSON object per line, terminated by `\n`. The only field it looks at is `status`. The CLI intentionally sends a minimal frame (`{"status":"green"}`) instead of the full status object, because the lamp only needs the color and long message/detail fields can exceed tiny firmware buffers:
 
 ```json
-{"status":"green","agent":"claude-code","event":"stop","message":"Ready"}
-{"status":"yellow","agent":"claude-code","event":"pre-tool-use","message":"Running Bash"}
-{"status":"red","agent":"claude-code","event":"permission-request","message":"Permission"}
-{"status":"blue","agent":"unknown","event":"unknown","message":"Unknown status"}
+{"status":"green"}
+{"status":"yellow"}
+{"status":"red"}
+{"status":"blue"}
 ```
 
 Color mapping:
 
 | `status` | LED |
 |---|---|
-| `green` | green |
-| `yellow` | yellow (R+G) |
-| `red` | red |
-| anything else | blue (safety: visible "I don't know") |
+| `green` | solid green |
+| `yellow` | blinking yellow (R+G) |
+| `red` | solid red |
+| anything else | solid blue (safety: visible "I don't know") |
 
 ## Test from the host
 

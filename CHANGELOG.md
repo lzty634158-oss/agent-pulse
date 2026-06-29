@@ -2,6 +2,22 @@
 
 All notable changes to `agent-traffic-light-monitor` are documented here. The project follows [Semantic Versioning](https://semver.org/). While the project is pre-1.0, minor bumps (0.y.0) may include breaking changes — read release notes before upgrading.
 
+## [0.2.1] — 2026-06-29
+
+### Fixed
+
+- Added `UserPromptSubmit` hook support so the status turns yellow immediately after the user submits a prompt. Previously, conversations that involved pure thinking and no tool calls could stay green until `Stop`, so the hardware lamp looked idle during the thinking phase.
+- Reduced the USB-serial device payload to the minimal `{ "status": "..." }` frame. The lamp does not need `message` or `detail`, and long Stop details could exceed firmware buffers.
+
+### Hardware
+
+- Updated the ESP32-C3 Mini 1 firmware so `yellow` blinks while Claude Code is working/thinking; `green` and `red` remain solid.
+
+### Documentation
+
+- Added the hardware prototype section to all localized READMEs (`zh-CN`, `zh-TW`, `ja`, `ko`, `de`, `fr`, `es`). The localized docs now mention the **ESP32-C3 Mini 1** hardware target and point users to [`firmware/README.md`](firmware/README.md) for wiring, flashing, and protocol details.
+- Fixed package-lock metadata so the root package version matches the published version.
+
 ## [0.2.0] — 2026-06-29
 
 ### Added

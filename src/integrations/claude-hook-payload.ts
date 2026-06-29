@@ -115,6 +115,10 @@ export function buildHookDetail(parsed: ParsedHookPayload, fallback?: string): s
 export function buildHookMessage(event: string, parsed: ParsedHookPayload): string {
   const tool = parsed.toolName ?? 'tool';
 
+  if (event === 'user-prompt-submit') {
+    return 'Claude Code is thinking';
+  }
+
   if (event === 'pre-tool-use') {
     if (parsed.command) return `Running ${parsed.command}`;
     if (parsed.filePath) return `Using ${tool} ${parsed.filePath}`;
