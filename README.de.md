@@ -19,6 +19,7 @@ Es zeigt den Status von Claude Code an:
 - Desktop-Benachrichtigungen
 - Lokale Browser-Konfigurationsoberfläche
 - Setup-Diagnose
+- Hardware-Prototyp: USB-Seriell-Statuslampe (ESP32-C3 Mini 1, experimentell)
 
 ## Installation
 
@@ -116,7 +117,43 @@ agent-traffic-light-monitor config show
 agent-traffic-light-monitor config set notifyOnComplete false
 agent-traffic-light-monitor config-ui
 agent-traffic-light-monitor doctor
+agent-traffic-light-monitor device list
+agent-traffic-light-monitor device push
+agent-traffic-light-monitor device watch
+agent-traffic-light-monitor watch --device
 ```
+
+## Hardware-Prototyp (experimentell)
+
+Ein früher Prototyp läuft auf einem **ESP32-C3 Mini 1** Entwicklerboard und nutzt dessen Onboard-RGB-LED, die per USB-Seriell-Verbindung Statusänderungen empfängt.
+
+Die Firmware liegt in [`firmware/`](firmware/) — Pinbelegung, Flash-Anleitung und JSON-Protokoll siehe [firmware/README.md](firmware/README.md).
+
+Schnellstart nach dem Flashen der Firmware:
+
+```bash
+# Erkannte serielle Ports auflisten (hilfreich bei Treiberproblemen)
+agent-traffic-light-monitor device list
+
+# Aktuellen Status einmal an die Lampe senden
+agent-traffic-light-monitor device push
+
+# Statusänderungen fortlaufend übertragen (Terminal bleibt still, nur Lampe)
+agent-traffic-light-monitor device watch
+
+# Oder ein einzelner `watch`-Prozess für Terminal und Lampe gleichzeitig
+agent-traffic-light-monitor watch --device
+```
+
+Bei mehreren angeschlossenen ESP32-Boards mit `--port` auswählen:
+
+```bash
+agent-traffic-light-monitor device watch --port COM5
+```
+
+Unterstützte USB-Seriell-Brücken: **Espressif native USB (0x303A)**, **WCH CH340 / CH341 (0x1A86)**, **Silicon Labs CP210x (0x10C4)**, **FTDI (0x0403)**.
+
+Status-zu-LED-Farbe Zuordnung: `green` → Grün, `yellow` → Gelb, `red` → Rot, alles andere → Blau (Sicherheits-Fallback).
 
 ## Entwicklungsbefehle
 

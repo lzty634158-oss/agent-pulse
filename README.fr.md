@@ -19,6 +19,7 @@ Il indique l’état de Claude Code :
 - Notifications de bureau
 - Interface de configuration locale dans le navigateur
 - Diagnostic d’installation
+- Prototype matériel : voyant d’état USB-série (ESP32-C3 Mini 1, expérimental)
 
 ## Installation
 
@@ -116,7 +117,43 @@ agent-traffic-light-monitor config show
 agent-traffic-light-monitor config set notifyOnComplete false
 agent-traffic-light-monitor config-ui
 agent-traffic-light-monitor doctor
+agent-traffic-light-monitor device list
+agent-traffic-light-monitor device push
+agent-traffic-light-monitor device watch
+agent-traffic-light-monitor watch --device
 ```
+
+## Prototype matériel (expérimental)
+
+Un premier prototype fonctionne sur une carte de développement **ESP32-C3 Mini 1** en utilisant sa LED RVB intégrée, qui reçoit les changements d’état via la liaison USB-série.
+
+Le firmware se trouve dans [`firmware/`](firmware/) — brochage, instructions de flashage et protocole JSON : voir [firmware/README.md](firmware/README.md).
+
+Démarrage rapide après avoir flashé le firmware :
+
+```bash
+# Lister les ports série détectés (utile pour diagnostiquer les pilotes)
+agent-traffic-light-monitor device list
+
+# Envoyer l’état courant une seule fois
+agent-traffic-light-monitor device push
+
+# Diffuser les changements d’état en continu (terminal silencieux, matériel uniquement)
+agent-traffic-light-monitor device watch
+
+# Ou un seul processus `watch` qui pilote à la fois le terminal et la lampe
+agent-traffic-light-monitor watch --device
+```
+
+Si plusieurs cartes ESP32 sont connectées, choisissez-en une avec `--port` :
+
+```bash
+agent-traffic-light-monitor device watch --port COM5
+```
+
+Ponts USB-série pris en charge : **Espressif USB natif (0x303A)**, **WCH CH340 / CH341 (0x1A86)**, **Silicon Labs CP210x (0x10C4)**, **FTDI (0x0403)**.
+
+Correspondance état → couleur de LED : `green` → vert, `yellow` → jaune, `red` → rouge, autre → bleu (repli de sécurité).
 
 ## Commandes de développement
 

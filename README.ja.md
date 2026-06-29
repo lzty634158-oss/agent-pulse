@@ -19,6 +19,7 @@ Agent Traffic Light Monitor は、Claude Code と AI コーディングエージ
 - デスクトップ通知
 - ローカルブラウザ設定 UI
 - セットアップ診断
+- ハードウェアプロトタイプ: USB シリアル状態ランプ (ESP32-C3 Mini 1、実験的)
 
 ## インストール
 
@@ -123,7 +124,43 @@ agent-traffic-light-monitor config show
 agent-traffic-light-monitor config set notifyOnComplete false
 agent-traffic-light-monitor config-ui
 agent-traffic-light-monitor doctor
+agent-traffic-light-monitor device list
+agent-traffic-light-monitor device push
+agent-traffic-light-monitor device watch
+agent-traffic-light-monitor watch --device
 ```
+
+## ハードウェアプロトタイプ(実験的)
+
+初期プロトタイプは **ESP32-C3 Mini 1** 開発ボード上で動作し、ボード上の RGB LED を USB シリアル経由で点灯させます。
+
+ファームウェアは [`firmware/`](firmware/) にあります。ピン配置、書き込み手順、JSON プロトコルは [firmware/README.md](firmware/README.md) を参照してください。
+
+ファームウェア書き込み後のクイックスタート:
+
+```bash
+# 検出されたシリアルポートの一覧(ドライバのトラブルシュート用)
+agent-traffic-light-monitor device list
+
+# 現在の状態を一度だけプッシュ
+agent-traffic-light-monitor device push
+
+# 状態変化をリアルタイムにストリーム(ターミナルは静かに、ハードウェアのみ)
+agent-traffic-light-monitor device watch
+
+# または、ターミナル表示とランプを 1 つの watch プロセスで同時に駆動
+agent-traffic-light-monitor watch --device
+```
+
+ESP32 ボードが複数接続されている場合は `--port` で指定します:
+
+```bash
+agent-traffic-light-monitor device watch --port COM5
+```
+
+対応 USB シリアルブリッジ: **Espressif ネイティブ USB (0x303A)**、**WCH CH340 / CH341 (0x1A86)**、**Silicon Labs CP210x (0x10C4)**、**FTDI (0x0403)**。
+
+状態と LED 色のマッピング: `green` → 緑、`yellow` → 黄、`red` → 赤、それ以外 → 青(安全フォールバック)。
 
 ## 開発コマンド
 

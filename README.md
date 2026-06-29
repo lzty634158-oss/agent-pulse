@@ -21,6 +21,7 @@ This MVP supports:
 - Desktop notifications
 - Local browser config UI
 - Setup diagnostics
+- Hardware prototype: USB-serial status lamp (ESP32-C3, experimental)
 
 ## Install
 
@@ -64,6 +65,14 @@ agent-traffic-light-monitor watch
 ```
 
 Then use Claude Code in the same project. The watch terminal will update as Claude uses tools, finishes, or needs attention.
+
+To also drive a hardware status lamp from the same `watch` process, add `--device`:
+
+```bash
+agent-traffic-light-monitor watch --device
+```
+
+This opens the serial port automatically and pushes status changes to the LED in parallel with the terminal view. If no ESP32 board is found, the watch continues without the lamp and warns once.
 
 ## Configure Agent Traffic Light Monitor
 
@@ -137,7 +146,43 @@ agent-traffic-light-monitor config show
 agent-traffic-light-monitor config set notifyOnComplete false
 agent-traffic-light-monitor config-ui
 agent-traffic-light-monitor doctor
+agent-traffic-light-monitor device list
+agent-traffic-light-monitor device push
+agent-traffic-light-monitor device watch
+agent-traffic-light-monitor watch --device
 ```
+
+## Hardware prototype (experimental)
+
+An early prototype runs on an ESP32-C3 Mini 1 dev board using its on-board RGB LED. The CLI streams status changes over USB serial.
+
+The firmware lives in [`firmware/`](firmware/) — see [firmware/README.md](firmware/README.md) for pinout, flash instructions, and the JSON protocol.
+
+Quick start (after flashing the firmware):
+
+```bash
+# List detected serial ports (helps debug driver issues)
+agent-traffic-light-monitor device list
+
+# Push the current status once
+agent-traffic-light-monitor device push
+
+# Stream live status changes (terminal is silent — pure hardware push)
+agent-traffic-light-monitor device watch
+
+# Or run a single `watch` process that drives both terminal + lamp
+agent-traffic-light-monitor watch --device
+```
+
+If multiple ESP32 boards are connected, pick one with `--port`:
+
+```bash
+agent-traffic-light-monitor device watch --port COM5
+```
+
+Detected USB-serial bridge chips: **Espressif native USB (0x303A)**, **WCH CH340/CH341 (0x1A86)**, **Silicon Labs CP210x (0x10C4)**, and **FTDI (0x0403)**.
+
+Status → LED color mapping: `green` → green, `yellow` → yellow, `red` → red, anything else → blue (safety fallback).
 
 ## Development commands
 

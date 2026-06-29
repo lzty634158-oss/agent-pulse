@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import { configSetCommand, configShowCommand, listConfigKeys } from './commands/config.js';
 import { configUiCommand } from './commands/config-ui.js';
+import { deviceListCommand, devicePushCommand, deviceWatchCommand } from './commands/device.js';
 import { doctorCommand } from './commands/doctor.js';
 import { historyCommand } from './commands/history.js';
 import { hookCommand } from './commands/hook.js';
@@ -42,8 +43,11 @@ program
 program
   .command('watch')
   .description('Watch the current Claude Code status')
-  .action(async () => {
-    await watchCommand();
+  .option('--device', 'also push status to a connected ESP32 device (graceful if not found)')
+  .option('--no-device', 'skip device push')
+  .option('-p, --port <path>', 'serial port path when --device is set')
+  .action(async (options: { device?: boolean; port?: string }) => {
+    await watchCommand({ device: options.device, port: options.port });
   });
 
 program
@@ -85,6 +89,33 @@ configCommand
   .description('Set a config value')
   .action(async (key: string, value: string) => {
     await configSetCommand(key, value);
+  });
+
+const deviceCommand = program
+  .command('device')
+  .description('Control a connected Agent Pulse status device (e.g. ESP32 USB lamp)');
+
+deviceCommand
+  .command('push')
+  .description('Push the current status to the device once')
+  .option('-p, --port <path>', 'serial port path (e.g. COM3 or /dev/ttyUSB0)')
+  .action(async (options: { port?: string }) => {
+    await devicePushCommand(options);
+  });
+
+deviceCommand
+  .command('list')
+  .description('List available serial ports and detected ESP32 devices')
+  .action(async () => {
+    await deviceListCommand();
+  });
+
+deviceCommand
+  .command('watch')
+  .description('Stream live status changes to the device')
+  .option('-p, --port <path>', 'serial port path (e.g. COM3 or /dev/ttyUSB0)')
+  .action(async (options: { port?: string }) => {
+    await deviceWatchCommand(options);
   });
 
 program

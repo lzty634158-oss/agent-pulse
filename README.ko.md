@@ -19,6 +19,7 @@ Agent Traffic Light Monitor는 Claude Code 및 AI 코딩 에이전트를 위한 
 - 데스크톱 알림
 - 로컬 브라우저 설정 UI
 - 설정 진단 명령
+- 하드웨어 프로토타입: USB 시리얼 상태 램프 (ESP32-C3 Mini 1, 실험적)
 
 ## 설치
 
@@ -123,7 +124,43 @@ agent-traffic-light-monitor config show
 agent-traffic-light-monitor config set notifyOnComplete false
 agent-traffic-light-monitor config-ui
 agent-traffic-light-monitor doctor
+agent-traffic-light-monitor device list
+agent-traffic-light-monitor device push
+agent-traffic-light-monitor device watch
+agent-traffic-light-monitor watch --device
 ```
+
+## 하드웨어 프로토타입(실험적)
+
+초기 프로토타입은 **ESP32-C3 Mini 1** 개발 보드에서 동작하며, 보드의 내장 RGB LED를 USB 시리얼을 통해 점등합니다.
+
+펌웨어는 [`firmware/`](firmware/)에 있습니다. 핀 배치, 업로드 방법, JSON 프로토콜은 [firmware/README.md](firmware/README.md)를 참조하세요.
+
+펌웨어 업로드 후 빠른 시작:
+
+```bash
+# 감지된 시리얼 포트 목록(드라이버 문제 해결용)
+agent-traffic-light-monitor device list
+
+# 현재 상태를 한 번 푸시
+agent-traffic-light-monitor device push
+
+# 상태 변화를 실시간으로 스트리밍(터미널은 조용히, 하드웨어만)
+agent-traffic-light-monitor device watch
+
+# 또는 터미널 표시와 램프를 단일 watch 프로세스로 동시에 구동
+agent-traffic-light-monitor watch --device
+```
+
+ESP32 보드가 여러 개 연결된 경우 `--port`로 지정합니다:
+
+```bash
+agent-traffic-light-monitor device watch --port COM5
+```
+
+지원되는 USB 시리얼 브리지 칩: **Espressif 네이티브 USB (0x303A)**, **WCH CH340 / CH341 (0x1A86)**, **Silicon Labs CP210x (0x10C4)**, **FTDI (0x0403)**.
+
+상태 → LED 색상 매핑: `green` → 초록, `yellow` → 노랑, `red` → 빨강, 그 외 → 파랑(안전 폴백).
 
 ## 개발 명령어
 
