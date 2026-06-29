@@ -1,6 +1,6 @@
 {
   "name": "agent-traffic-light-monitor",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A status light and alerting layer for Claude Code and AI coding agents.",
   "type": "module",
   "main": "./dist/index.js",

@@ -2,7 +2,7 @@
 
 All notable changes to `agent-traffic-light-monitor` are documented here. The project follows [Semantic Versioning](https://semver.org/). While the project is pre-1.0, minor bumps (0.y.0) may include breaking changes — read release notes before upgrading.
 
-## [0.2.1] — 2026-06-29
+## [0.2.2] — 2026-06-29
 
 ### Fixed
 
